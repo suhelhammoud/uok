@@ -56,7 +56,8 @@ class ModuleResource(resources.ModelResource):
 
 class ModuleAdmin(ImportExportModelAdmin):
     list_display = ('code', 'name', 'credit', 'department')
-    list_filter = ('department', 'plan',)
+    list_filter = ('department',)
+    search_fields = ['code', 'name']
     resource_class = ModuleResource
 
 
@@ -71,7 +72,10 @@ class DependencyResource(resources.ModelResource):
 class DependencyAdmin(ImportExportModelAdmin):
     resource_class = DependencyResource
     list_display = ('pre_module', 'post_module',)
-    list_filter = ('pre_module', 'post_module',)
+    list_filter = ('post_module','pre_module', )
+    search_fields = ['post_module__code', 'post_module__name']
 
 
 admin.site.register(Dependency, DependencyAdmin)
+
+admin.site.register(Student)

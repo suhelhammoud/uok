@@ -24,24 +24,12 @@ class Department(models.Model):
         return self.caption
 
 
-class Plan(models.Model):
-    name = models.CharField(max_length=255, unique=True)
-    department = models.ForeignKey(Department, on_delete=models.DO_NOTHING)
-    description = models.TextField(blank=True)
-
-    def get_modules(self):
-        return Module.objects.filter(plan=self.id)
-
-    def __str__(self):
-        return f'{self.name}-{self.department}'
-
-
 class Module(models.Model):
     code = models.CharField(max_length=255, unique=True)
     name = models.CharField(max_length=255)
     department = models.ForeignKey(Department,
                                    on_delete=models.CASCADE)
-    plan = models.ForeignKey(Plan, blank=True, on_delete=models.DO_NOTHING)
+    # plan = models.ForeignKey(Plan, blank=True, on_delete=models.DO_NOTHING)
     credit = models.SmallIntegerField(default=0)
     elective = models.BooleanField(default=False)
     lecture_hours = models.SmallIntegerField(default=1)
@@ -56,6 +44,19 @@ class Module(models.Model):
 
     def __str__(self):
         return f'{self.name} ({self.code})'
+
+
+class Plan(models.Model):
+    name = models.CharField(max_length=255, unique=True)
+    department = models.ForeignKey(Department, on_delete=models.DO_NOTHING)
+    modules = models.ManyToManyField(Module)
+    description = models.TextField(blank=True)
+
+    def get_modules(self):
+        return Module.objects.filter(plan=self.id)
+
+    def __str__(self):
+        return f'{self.name}-{self.department}'
 
 
 class Dependency(models.Model):
@@ -74,13 +75,17 @@ class Dependency(models.Model):
         return f'''{self.pre_module}     =>     {self.post_module}'''
 
 
-class Student3(models.Model):
+class Student(models.Model):
     user = models.OneToOneField(User,
                                 default="",
                                 on_delete=models.CASCADE,
                                 primary_key=True)
 
     reg_id = models.IntegerField(unique=True, null=False)
+
+    level = models.SmallIntegerField(default=1)
+
+    credits = models.SmallIntegerField(default=0)
 
     plan = models.ForeignKey(Plan,
                              blank=True,
