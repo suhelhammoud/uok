@@ -78,7 +78,9 @@ THIRD_PARTY_APPS = [
 
 LOCAL_APPS = [
     "uok.users.apps.UsersConfig",
-    # Your stuff: custom apps go here
+    # suhel Your stuff: custom apps go here
+    "uok.core.apps.CoreConfig",
+    'import_export',
 ]
 # https://docs.djangoproject.com/en/dev/ref/settings/#installed-apps
 INSTALLED_APPS = DJANGO_APPS + THIRD_PARTY_APPS + LOCAL_APPS
@@ -285,3 +287,4 @@ REST_FRAMEWORK = {
 CORS_URLS_REGEX = r"^/api/.*$"
 # Your stuff...
 # ------------------------------------------------------------------------------
+# INSTALLED_APPS += ["uok.core.apps.CoreConfig"]  # noqa F405

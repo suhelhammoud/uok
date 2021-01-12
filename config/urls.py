@@ -16,7 +16,8 @@ urlpatterns = [
     # User management
     path("users/", include("uok.users.urls", namespace="users")),
     path("accounts/", include("allauth.urls")),
-    # Your stuff: custom urls includes go here
+    # suhel Your stuff: custom urls includes go here
+    path("users/", include("uok.core.urls", namespace="core")),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 
 # API URLS
